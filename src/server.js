@@ -4,6 +4,7 @@ const converter = require("node-m3u8-to-mp4");
 const formidable = require("formidable");
 const http = require("http");
 const fs = require("fs");
+const PORT = process.env.PORT || 8080;
 
 var htmlFile = null;
 var cssFile = null;
@@ -116,6 +117,5 @@ async function convert(filepath) {
     console.log("done!");
   });
 }
-
-console.info("starting server");
-server.listen(80);
+console.info("starting server on port " + PORT);
+server.listen(PORT);
