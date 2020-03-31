@@ -7,9 +7,9 @@
     "formidable": "^1.2.2",
     "node-m3u8-to-mp4": "^2.0.0"
   },
-  "start": "node src/server.js",
   "devDependencies": {},
   "scripts": {
+    "start": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
