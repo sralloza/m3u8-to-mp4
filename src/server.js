@@ -117,4 +117,5 @@ async function convert(filepath) {
   });
 }
 
+console.info("starting server");
 server.listen(80);
