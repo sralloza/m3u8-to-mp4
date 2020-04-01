@@ -25,13 +25,12 @@ fs.readFile("./src/video.js", function(err, videojs) {
   videojsFile = videojs;
 });
 
-function remove_file_ok(filepath){
- try{
-
-   return fs.unlinkSync(filepath);
- } catch{
-   return;
- }
+function remove_file_ok(filepath) {
+  try {
+    return fs.unlinkSync(filepath);
+  } catch {
+    return;
+  }
 }
 
 const server = http.createServer();
@@ -42,15 +41,20 @@ server.on("request", async (req, res) => {
     form.parse(req, async (err, fields, files) => {
       console.log("files:");
       console.log(files);
-      let filepath = files["multipleFiles"]["path"];
+
+      let filepath = files["filesToConvert"]["path"];
+      let videoName = files["filesToConvert"]["name"].split(".m3u8")[0];
+      videoName = videoName + ".mp4";
+
       console.log(filepath);
+      console.log(videoName);
 
-      var videoPath = path.join(path.dirname(__dirname), "video.mp4");
+      var videoPath = path.join(path.dirname(__dirname), videoName);
 
-      remove_file_ok(videoPath)
+      remove_file_ok(videoPath);
 
       try {
-        response = await convert(filepath);
+        response = await convert(filepath, videoPath);
       } catch {
         res.setHeader("Content-Type", "text/html");
         res.write("Error");
@@ -66,12 +70,12 @@ server.on("request", async (req, res) => {
         res.setHeader("Content-Type", "	video/mp4");
         res.setHeader(
           "Content-Disposition",
-          "attachment; filename=video.mp4"
+          `attachment; filename=${videoName}`
         );
         res.write(data, "binary");
         res.end();
 
-        remove_file_ok(videoPath)
+        remove_file_ok(videoPath);
       });
     });
   } else if (req.url == "/style.css") {
@@ -91,11 +95,11 @@ server.on("request", async (req, res) => {
   }
 });
 
-async function convert(filepath) {
+async function convert(filepath, videoPath) {
   await converter(
     // path.join(__dirname, "index.m3u8"),
     filepath,
-    "video.mp4",
+    videoPath,
     (status, index, total) => {
       switch (status) {
         case "generating":
