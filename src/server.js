@@ -55,10 +55,17 @@ server.on("request", async (req, res) => {
 
       try {
         response = await convert(filepath, videoPath);
-      } catch {
+      } catch (exc) {
         res.setHeader("Content-Type", "text/html");
-        res.write("Error");
-        res.end();
+        if (exc.message.indexOf("Request failed") !== -1) {
+          res.write(`Failed download of video (${exc.message})`);
+          return res.end();
+        }
+        res.write("Error converting files: " + exc);
+        res.write("<br>");
+        console.log(exc);
+        res.write(typeof exc);
+        return res.end();
       }
 
       fs.readFile(videoPath, (err, data) => {
@@ -76,6 +83,7 @@ server.on("request", async (req, res) => {
         res.end();
 
         remove_file_ok(videoPath);
+        return;
       });
     });
   } else if (req.url == "/style.css") {
