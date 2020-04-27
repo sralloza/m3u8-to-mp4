@@ -77,7 +77,7 @@ server.on("request", async (req, res) => {
         res.setHeader("Content-Type", "	video/mp4");
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename=${videoName}`
+          `attachment; filename="${videoName}"`
         );
         res.write(data, "binary");
         res.end();
