@@ -4,12 +4,13 @@
   "description": "m3u8 to mp4 converter",
   "main": "server.js",
   "dependencies": {
+    "express": "^4.17.1",
     "formidable": "^1.2.2",
     "node-m3u8-to-mp4": "^2.0.0"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node src/server.js",
+    "dev": "nodemon node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -31,5 +32,8 @@
   "homepage": "https://github.com/sralloza/m3u8-to-mp4#readme",
   "engines": {
     "node": "12.x"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
